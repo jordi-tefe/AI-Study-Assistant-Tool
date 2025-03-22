@@ -1,0 +1,131 @@
+/*!***************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./styles/QuizGenerator.module.css ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************/
+/* UploadQuiz Styling */
+.QuizGenerator_uploadContainer__eyOh1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .QuizGenerator_inputFile__Gh4bc {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-right: 10px;
+  }
+  
+  .QuizGenerator_uploadButton__XZ8oG {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .QuizGenerator_uploadButton__XZ8oG:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+  
+  .QuizGenerator_uploadButton__XZ8oG:hover:not(:disabled) {
+    background-color: #45a049;
+  }
+  
+  /* Quiz Styling */
+  .QuizGenerator_quizContainer__viuWo {
+    margin-top: 10%;
+    
+  }
+  
+  .QuizGenerator_question__6a0Wl {
+    margin-bottom: 20px;
+  }
+  
+  
+  .QuizGenerator_correct__SvuaP {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .QuizGenerator_incorrect__gSZis {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .QuizGenerator_explanation__7boMx {
+    margin-top: 10px;
+    font-style: italic;
+    color: #777;
+  }
+  
+  /* Submit Button Styling */
+  .QuizGenerator_submitButton__3FN4J {
+    background-color: #4caf50;
+    color: white;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .QuizGenerator_submitButton__3FN4J:hover {
+    background-color: #45a049;
+  }
+  
+  /* Score Styling */
+  .QuizGenerator_score__47tSZ {
+    font-size: 1.5rem;
+    color: #333;
+    margin-top: 20px;
+  }
+  
+/*!****************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[3]!./styles/globals.css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************/
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+  }
+  
+  main {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 800px;
+    text-align: center;
+  }
+
+  button {
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  button:focus {
+    outline: none;
+    border-color: #4caf50;
+  }
+  
+  

@@ -1,0 +1,83 @@
+/* UploadQuiz Styling */
+.uploadContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .inputFile {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-right: 10px;
+  }
+  
+  .uploadButton {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .uploadButton:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+  
+  .uploadButton:hover:not(:disabled) {
+    background-color: #45a049;
+  }
+  
+  /* Quiz Styling */
+  .quizContainer {
+    margin-top: 10%;
+    
+  }
+  
+  .question {
+    margin-bottom: 20px;
+  }
+  
+  
+  .correct {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .incorrect {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .explanation {
+    margin-top: 10px;
+    font-style: italic;
+    color: #777;
+  }
+  
+  /* Submit Button Styling */
+  .submitButton {
+    background-color: #4caf50;
+    color: white;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submitButton:hover {
+    background-color: #45a049;
+  }
+  
+  /* Score Styling */
+  .score {
+    font-size: 1.5rem;
+    color: #333;
+    margin-top: 20px;
+  }
+  
