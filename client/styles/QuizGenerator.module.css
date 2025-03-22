@@ -1,83 +1,178 @@
-/* UploadQuiz Styling */
+
+
+/* Upload Quiz Styling */
 .uploadContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.inputFile {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.inputFile:focus {
+  border-color: #4caf50;
+  outline: none;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+}
+
+.uploadButton {
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.uploadButton:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.uploadButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #45a049, #1e6d22);
+}
+
+/* Quiz Container */
+.quizContainer {
+  width: 100%;
+  max-width: 600px;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-in-out;
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+/* Question Styling */
+.question {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* Answer Styling */
+.correct {
+  color: #2e7d32;
+  font-weight: bold;
+  animation: pulse 0.4s ease-in-out;
+}
+
+.incorrect {
+  color: #d32f2f;
+  font-weight: bold;
+  animation: shake 0.4s ease-in-out;
+}
+
+.explanation {
+  margin-top: 12px;
+  font-style: italic;
+  color: #666;
+  padding: 10px;
+  border-left: 4px solid #ccc;
+  background: #f9f9f9;
+}
+
+/* Submit Button */
+.submitButton {
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: 0.3s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  margin-top: 15px;
+}
+
+.submitButton:hover {
+  background: linear-gradient(135deg, #45a049, #1e6d22);
+}
+
+/* Score Styling */
+.score {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #2e7d32;
+  text-align: center;
+  margin-top: 20px;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-  
-  .inputFile {
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    margin-right: 10px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .uploadButton {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
   }
-  
-  .uploadButton:disabled {
-    background-color: #ddd;
-    cursor: not-allowed;
+  50% {
+    transform: scale(1.1);
   }
-  
-  .uploadButton:hover:not(:disabled) {
-    background-color: #45a049;
+  100% {
+    transform: scale(1);
   }
-  
-  /* Quiz Styling */
-  .quizContainer {
-    margin-top: 10%;
-    
-  }
-  
-  .question {
-    margin-bottom: 20px;
-  }
-  
-  
-  .correct {
-    color: green;
-    font-weight: bold;
-  }
-  
-  .incorrect {
-    color: red;
-    font-weight: bold;
-  }
-  
-  .explanation {
-    margin-top: 10px;
-    font-style: italic;
-    color: #777;
-  }
-  
-  /* Submit Button Styling */
-  .submitButton {
-    background-color: #4caf50;
-    color: white;
-    border-radius: 4px;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .submitButton:hover {
-    background-color: #45a049;
-  }
-  
-  /* Score Styling */
-  .score {
-    font-size: 1.5rem;
-    color: #333;
-    margin-top: 20px;
-  }
-  
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  border-radius: 8px;
+}
+
+.downloadButton {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 15px;
+  background: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.downloadButton:hover {
+  background: #0056b3;
+}

@@ -2,6 +2,7 @@
 
 import React ,{useState} from "react"; // Import useState to manage state for answers and score
 import UploadQuiz from "./components/UploadQuiz"; // Import UploadQuiz component to handle file upload
+import ShortNote from "./components/Shortnote";
 import Quiz from "./components/Quiz"; // Import Quiz component to display the quiz
 import "../styles/globals.css"
 import { useRouter } from "next/navigation"; // Import Next.js router
@@ -15,9 +16,12 @@ export default function Home() {
   };
   return (
     <main className="main-container">
+        <h1>AI Short Note Generator</h1>
+        <ShortNote/>
       <h1>AI Quiz Generator</h1>
       <UploadQuiz setQuiz={handleQuizGenerated} /> {/* Pass setQuiz to UploadQuiz to update the quiz */}
       {/* {quiz && <Quiz quiz={quiz} />} Display quiz if it has been generated */}
+      
     </main>
   );
 }

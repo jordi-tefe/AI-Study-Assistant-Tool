@@ -28,11 +28,15 @@ const UploadQuiz: React.FC<UploadQuizProps> = ({ setQuiz }) => {
     setLoading(true); // Show loading state (spinner or button disable)
 
     const formData = new FormData(); 
-    formData.append("pdf", file); // Add the selected file to the FormData object
+    formData.append("file", file); // Add the selected file to the FormData object
 
     try {
       // Send POST request to the backend (ensure you have a backend endpoint for file handling)
-      const response = await axios.post("http://localhost:5000/upload", formData);
+      const response = await axios.post("http://localhost:5000/upload", formData,{
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       setQuiz(response.data.quiz); // Pass the generated quiz data to the parent component
       localStorage.setItem("quiz", JSON.stringify(response.data.quiz)); // Store in localStorage
       console.log("Navigating to /quiz...");
@@ -50,8 +54,9 @@ const UploadQuiz: React.FC<UploadQuizProps> = ({ setQuiz }) => {
     <div className={styles.uploadContainer}>
       <input 
         type="file" 
+        accept=".pdf, .txt, .docx, .pptx" // ✅ Add file types here
         onChange={handleFileChange} 
-        className={styles.inputFile} 
+        className={styles.inputFile} placeholder="Drop Your File"
       /> {/* File input field that allows the user to select a PDF */}
       <button 
         onClick={handleUpload} 
@@ -59,7 +64,7 @@ const UploadQuiz: React.FC<UploadQuizProps> = ({ setQuiz }) => {
         className={styles.uploadButton} >
         {loading ? "Processing..." : "Upload & Generate Quiz" }
       </button> 
-      <button onClick={pagetry}>try</button>
+      <button onClick={pagetry}>Quiz Page</button>
       {/* Button to trigger the file upload process, disabled while loading */}
     </div>
   );

@@ -1,102 +1,200 @@
 /*!***************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[5].use[3]!./styles/QuizGenerator.module.css ***!
   \***************************************************************************************************************************************************************************************************************************************************************************/
-/* UploadQuiz Styling */
+
+
+/* Upload Quiz Styling */
 .QuizGenerator_uploadContainer__eyOh1 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.QuizGenerator_inputFile__Gh4bc {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.QuizGenerator_inputFile__Gh4bc:focus {
+  border-color: #4caf50;
+  outline: none;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+}
+
+.QuizGenerator_uploadButton__XZ8oG {
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.QuizGenerator_uploadButton__XZ8oG:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.QuizGenerator_uploadButton__XZ8oG:hover:not(:disabled) {
+  background: linear-gradient(135deg, #45a049, #1e6d22);
+}
+
+/* Quiz Container */
+.QuizGenerator_quizContainer__viuWo {
+  width: 100%;
+  max-width: 600px;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  animation: QuizGenerator_fadeIn__0a5IB 0.5s ease-in-out;
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+/* Question Styling */
+.QuizGenerator_question__6a0Wl {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* Answer Styling */
+.QuizGenerator_correct__SvuaP {
+  color: #2e7d32;
+  font-weight: bold;
+  animation: QuizGenerator_pulse__9sDSZ 0.4s ease-in-out;
+}
+
+.QuizGenerator_incorrect__gSZis {
+  color: #d32f2f;
+  font-weight: bold;
+  animation: QuizGenerator_shake__uUdhg 0.4s ease-in-out;
+}
+
+.QuizGenerator_explanation__7boMx {
+  margin-top: 12px;
+  font-style: italic;
+  color: #666;
+  padding: 10px;
+  border-left: 4px solid #ccc;
+  background: #f9f9f9;
+}
+
+/* Submit Button */
+.QuizGenerator_submitButton__3FN4J {
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: 0.3s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  margin-top: 15px;
+}
+
+.QuizGenerator_submitButton__3FN4J:hover {
+  background: linear-gradient(135deg, #45a049, #1e6d22);
+}
+
+/* Score Styling */
+.QuizGenerator_score__47tSZ {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #2e7d32;
+  text-align: center;
+  margin-top: 20px;
+  animation: QuizGenerator_fadeIn__0a5IB 0.8s ease-in-out;
+}
+
+/* Animations */
+@keyframes QuizGenerator_fadeIn__0a5IB {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-  
-  .QuizGenerator_inputFile__Gh4bc {
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    margin-right: 10px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .QuizGenerator_uploadButton__XZ8oG {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+}
+
+@keyframes QuizGenerator_pulse__9sDSZ {
+  0% {
+    transform: scale(1);
   }
-  
-  .QuizGenerator_uploadButton__XZ8oG:disabled {
-    background-color: #ddd;
-    cursor: not-allowed;
+  50% {
+    transform: scale(1.1);
   }
-  
-  .QuizGenerator_uploadButton__XZ8oG:hover:not(:disabled) {
-    background-color: #45a049;
+  100% {
+    transform: scale(1);
   }
-  
-  /* Quiz Styling */
-  .QuizGenerator_quizContainer__viuWo {
-    margin-top: 10%;
-    
-  }
-  
-  .QuizGenerator_question__6a0Wl {
-    margin-bottom: 20px;
-  }
-  
-  
-  .QuizGenerator_correct__SvuaP {
-    color: green;
-    font-weight: bold;
-  }
-  
-  .QuizGenerator_incorrect__gSZis {
-    color: red;
-    font-weight: bold;
-  }
-  
-  .QuizGenerator_explanation__7boMx {
-    margin-top: 10px;
-    font-style: italic;
-    color: #777;
-  }
-  
-  /* Submit Button Styling */
-  .QuizGenerator_submitButton__3FN4J {
-    background-color: #4caf50;
-    color: white;
-    border-radius: 4px;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .QuizGenerator_submitButton__3FN4J:hover {
-    background-color: #45a049;
-  }
-  
-  /* Score Styling */
-  .QuizGenerator_score__47tSZ {
-    font-size: 1.5rem;
-    color: #333;
-    margin-top: 20px;
-  }
-  
+}
+
+@keyframes QuizGenerator_shake__uUdhg {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+.QuizGenerator_popup__uh99s {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  border-radius: 8px;
+}
+
+.QuizGenerator_downloadButton__aWO0W {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 15px;
+  background: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.QuizGenerator_downloadButton__aWO0W:hover {
+  background: #0056b3;
+}
+
 /*!****************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[3]!./styles/globals.css ***!
   \****************************************************************************************************************************************************************************************************************************************************************/
+/* General Styling */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-  }
+  font-family: 'Poppins', sans-serif;
+  background-color: #f4f6f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+}
   
   main {
     background-color: #ffffff;

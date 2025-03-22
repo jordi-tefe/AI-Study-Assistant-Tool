@@ -3,11 +3,18 @@ import cors from "cors"; // Import CORS to allow cross-origin requests
 import mongoose from "mongoose"; // Import mongoose for MongoDB integration
 import dotenv from "dotenv"; // Import dotenv to manage environment variables
 import fileUpload from "express-fileupload"; // Import express-fileupload to handle file uploads
+import path from 'path';
+
+// Use import.meta.url to get the current file's path
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+
 // import pdfParse from "pdf-parse"; // Import pdf-parse to read content from PDF files
 import pdfParse from "pdf-parse/lib/pdf-parse.js";
+import textract from "textract"; // Extract text from various file types
 
 import axios from "axios"; // Import axios to make HTTP requests to external APIs
 import Quiz from "./models/Quiz.js"; // Import the Quiz model for saving quiz data in the database
+
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -22,27 +29,55 @@ app.use(fileUpload()); // Middleware for handling file uploads
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("✅ MongoDB Connected")) // If connection is successful
   .catch((err) => console.log("❌ MongoDB Error:", err)); // Log errors if any
+
+  // Function to extract text based on file type
+const extractText = async (file) => {
+
+    // if (!file || !file.name || !file.data) {
+    //     throw new Error("❌ File object is missing required properties (name, data).");
+    //   }
+    const fileExtension = file.name.split(".").pop().toLowerCase();
+  
+    if (fileExtension === "Pdf") {
+      const pdfBuffer = file.data;
+      const pdfData = await pdfParse(pdfBuffer);
+      return pdfData.text;
+    } else {
+      return new Promise((resolve, reject) => {
+        textract.fromBufferWithMime(file.mimetype, file.data, (error, text) => {
+          if (error) reject(error);
+          else resolve(text);
+        });
+      });
+    }
+  };
   app.post("/upload", async (req, res) => {
     try {
-      if (!req.files || !req.files.pdf) {
-        return res.status(400).json({ error: "❌ No PDF file uploaded" });
+
+        console.log("📝 Incoming request:", req.files); // Debug request files
+
+      if (!req.files || !req.files.file) {
+        return res.status(400).json({ error: "❌ No file uploaded" });
       }
   
-      const pdfBuffer = req.files.pdf.data;
-      if (!pdfBuffer) {
-        return res.status(400).json({ error: "❌ Uploaded file is empty" });
-      }
+
+    //   const pdfBuffer = req.files.pdf.data;
+    const file = req.files.file;
+    const text = await extractText(file);
+    //   if (!pdfBuffer) {
+    //     return res.status(400).json({ error: "❌ Uploaded file is empty" });
+    //   }
   
-      // Extract text from PDF
-      const text = await pdfParse(pdfBuffer).then((data) => data.text);
+    //   // Extract text from PDF
+    //   const text = await pdfParse(pdfBuffer).then((data) => data.text);
   
       if (!text.trim()) {
-        return res.status(400).json({ error: "❌ PDF contains no readable text" });
+        return res.status(400).json({ error: "❌ File contains no readable text" });
       }
   
-      // ⚠️ Limit text length to avoid exceeding OpenAI's token limit
-      const maxTextLength = 3000; // Adjust based on your needs
-      const trimmedText = text.length > maxTextLength ? text.substring(0, maxTextLength) + "..." : text;
+    //   // ⚠️ Limit text length to avoid exceeding OpenAI's token limit
+    //   const maxTextLength = 3000; // Adjust based on your needs
+    //   const trimmedText = text.length > maxTextLength ? text.substring(0, maxTextLength) + "..." : text;
   
       // AI Prompt
       const prompt = `
@@ -136,7 +171,117 @@ Text: "${text}"
       res.status(500).json({ error: error.response?.data?.error?.message || "AI API request failed" });
     }
   });
+
+
+//Short note
+  app.post("/summarize", async (req, res) => {
+    try {
+      if (!req.files || !req.files.file) {
+        return res.status(400).json({ error: "❌ No file uploaded" });
+      }
   
+      const file = req.files.file;
+      let text = "";
+  
+      // Extract text based on file type
+      if (file.mimetype === "application/pdf") {
+        const data = await pdfParse(file.data);
+        text = data.text;
+      } else if (file.mimetype === "text/plain") {
+        text = file.data.toString("utf-8");
+      } else if (
+        file.mimetype ===
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      ) {
+        const data = await mammoth.extractRawText({ buffer: file.data });
+        text = data.value;
+      } else {
+        return res.status(400).json({ error: "❌ Unsupported file type" });
+      }
+  
+      if (!text.trim()) {
+        return res.status(400).json({ error: "❌ File contains no readable text" });
+      }
+  
+      // AI Prompt for summarization
+      const prompt = `Summarize and make a short not of the following text into a short and concise note:\n\n"${text}"`;
+  
+      console.log("📩 Sending request to OpenAI:", prompt);
+  
+    //   const response = await openai.chat.completions.create({
+    //     model: "gpt-4",
+    //     messages: [{ role: "user", content: prompt }],
+    //     temperature: 0.7,
+    //   });
+
+    const response = await axios.post(
+        "https://openrouter.ai/api/v1/chat/completions",
+        {
+          model: "deepseek/deepseek-r1:free", // ✅ DeepSeek model via OpenRouter
+          messages: [{ role: "user", content: prompt }], 
+          
+          temperature: 0.7,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`, // ✅ Use OpenRouter API key
+            "HTTP-Referer": "<YOUR_SITE_URL>", // Optional (replace with your site URL)
+            "X-Title": "<YOUR_SITE_NAME>", // Optional (replace with your site name)
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      
+
+//   console.log("✅ Deepseek Response:", response.data); // ✅ Debugging log
+// console.log("✅ Deepseek Response message object:", JSON.stringify(response.data.choices[0].message, null, 2));
+
+
+  
+//       if (!response.choices || response.choices.length === 0) {
+//         throw new Error("❌ Invalid AI response format");
+//       }
+  
+    //   let summary = response.data.choices[0]?.message?.content?.trim();
+
+    //   if (!summary) {
+    //     console.error("❌ AI Response does not contain valid content:", JSON.stringify(response.data, null, 2));
+    //     return res.status(500).json({ error: "Invalid AI response format" });
+    //   }
+     // Try to access the content based on the correct path
+     
+     // Extract the summary from the content field of the response
+     let summary = response.data.choices[0]?.message?.content?.trim();
+
+     if (!summary) {
+       console.error("❌ AI Response does not contain valid content:", JSON.stringify(response.data, null, 2));
+       return res.status(500).json({ error: "Invalid AI response format" });
+     }
+ 
+     console.log("✅ AI Generated Summary:", summary);
+  
+      // Generate PDF file with the summary
+      const pdfPath = path.join(__dirname, "summary.pdf");
+      const doc = new PDFDocument();
+      doc.pipe(fs.createWriteStream(pdfPath));
+      doc.fontSize(14).text(summary, { align: "left" });
+      doc.end();
+  
+      // Send the PDF as response
+      res.download(pdfPath, "short-note.pdf", (err) => {
+        if (err) {
+          console.error("❌ Error sending PDF:", err);
+          res.status(500).json({ error: "Failed to generate PDF" });
+        }
+  
+        // Delete the file after sending
+        fs.unlinkSync(pdfPath);
+      });
+    } catch (error) {
+      console.error("❌ AI API Error:", error.message);
+      res.status(500).json({ error: "AI API request failed" });
+    }
+  });
 // Route to get all quizzes from MongoDB
 app.get("/quizzes", async (req, res) => {
   try {
