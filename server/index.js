@@ -4,9 +4,16 @@ import mongoose from "mongoose"; // Import mongoose for MongoDB integration
 import dotenv from "dotenv"; // Import dotenv to manage environment variables
 import fileUpload from "express-fileupload"; // Import express-fileupload to handle file uploads
 import path from 'path';
+import PDFDocument from 'pdfkit';
+import fs from 'fs';
+// Resolve the current directory correctly
+const __dirname = path.resolve();
 
-// Use import.meta.url to get the current file's path
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+// Debugging the path to ensure it's correct
+console.log("Current directory:", __dirname);
+
+// Correct the path to avoid double "C:\"
+const pdfPath = path.join(__dirname, "summary.pdf");
 
 // import pdfParse from "pdf-parse"; // Import pdf-parse to read content from PDF files
 import pdfParse from "pdf-parse/lib/pdf-parse.js";
@@ -259,24 +266,61 @@ Text: "${text}"
      }
  
      console.log("✅ AI Generated Summary:", summary);
+
+     // Generate PDF file with the summary
+const pdfPath = path.join(__dirname, "summary.pdf");
+
   
-      // Generate PDF file with the summary
-      const pdfPath = path.join(__dirname, "summary.pdf");
-      const doc = new PDFDocument();
-      doc.pipe(fs.createWriteStream(pdfPath));
-      doc.fontSize(14).text(summary, { align: "left" });
-      doc.end();
-  
-      // Send the PDF as response
-      res.download(pdfPath, "short-note.pdf", (err) => {
-        if (err) {
-          console.error("❌ Error sending PDF:", err);
-          res.status(500).json({ error: "Failed to generate PDF" });
-        }
-  
-        // Delete the file after sending
-        fs.unlinkSync(pdfPath);
-      });
+     // Ensure the directory exists
+const directory = path.dirname(pdfPath);
+if (!fs.existsSync(directory)) {
+  fs.mkdirSync(directory, { recursive: true });
+  console.log("Directory created:", directory);
+}
+
+// Debugging the final PDF path
+console.log("PDF file path:", pdfPath);
+
+const doc = new PDFDocument();
+
+// Pipe the PDF output to a file
+const writeStream = fs.createWriteStream(pdfPath);
+doc.pipe(writeStream);
+
+// Write text to the PDF
+doc.fontSize(14).text(summary, { align: "left" });
+doc.end();
+
+// Wait for the PDF to finish writing before proceeding
+writeStream.on('finish', () => {
+  console.log('PDF generated successfully at:', pdfPath);
+
+  // Check if the PDF file was created successfully
+  fs.access(pdfPath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error("❌ PDF file does not exist at:", pdfPath);
+      return res.status(500).json({ error: "Failed to generate PDF file" });
+    }
+
+    // Send the PDF as a response
+    res.download(pdfPath, "short-note.pdf", (err) => {
+      if (err) {
+        console.error("❌ Error sending PDF:", err);
+        res.status(500).json({ error: "Failed to send PDF" });
+      } else {
+        console.log("PDF sent successfully!");
+      }
+
+      // Delete the file after sending
+      try {
+        fs.unlinkSync(pdfPath); // Ensure file exists before attempting to delete
+        console.log("PDF file deleted:", pdfPath); // Log successful deletion
+      } catch (deleteError) {
+        console.error("❌ Error deleting PDF:", deleteError);
+      }
+    });
+  });
+});
     } catch (error) {
       console.error("❌ AI API Error:", error.message);
       res.status(500).json({ error: "AI API request failed" });

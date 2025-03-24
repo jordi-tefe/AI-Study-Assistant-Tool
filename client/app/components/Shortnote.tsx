@@ -39,6 +39,10 @@ const ShortNote: React.FC = () => {
 
     setLoading(false);
   };
+  const handleDownload = () => {
+    // Close the popup after the user clicks the download link
+    setDownloadUrl(null);
+  };
 
   return (
     <div className={styles.uploadContainer}>
@@ -56,7 +60,7 @@ const ShortNote: React.FC = () => {
       {downloadUrl && (
         <div className={styles.popup}>
           <p>✅ Short note is ready!</p>
-          <a href={downloadUrl} download="short-note.pdf" className={styles.downloadButton}>
+          <a href={downloadUrl} download="short-note.pdf" className={styles.downloadButton} onClick={handleDownload} >
             Download Short Note
           </a>
         </div>
