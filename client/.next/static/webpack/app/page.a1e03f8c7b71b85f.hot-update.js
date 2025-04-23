@@ -1,0 +1,21 @@
+/*
+ * ATTENTION: An "eval-source-map" devtool has been used.
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */
+self["webpackHotUpdate_N_E"]("app/page",{
+
+/***/ "(app-pages-browser)/./styles/ChatBot.module.css":
+/*!***********************************!*\
+  !*** ./styles/ChatBot.module.css ***!
+  \***********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval(__webpack_require__.ts("// extracted by mini-css-extract-plugin\nmodule.exports = {\"chatContainer\":\"ChatBot_chatContainer__868_P\",\"chatBox\":\"ChatBot_chatBox__ofXiw\",\"messagesContainer\":\"ChatBot_messagesContainer__REvlV\",\"message\":\"ChatBot_message__G_47v\",\"userMessage\":\"ChatBot_userMessage__W5Lan\",\"botMessage\":\"ChatBot_botMessage__YajhX\",\"loading\":\"ChatBot_loading__owCEP\",\"inputContainer\":\"ChatBot_inputContainer__T251u\",\"inputField\":\"ChatBot_inputField__eEJ9p\",\"sendButton\":\"ChatBot_sendButton__7d2Ap\",\"Buttons\":\"ChatBot_Buttons__bF83u\",\"l37-1\":\"ChatBot_l37-1__2p3CD\",\"l37-2\":\"ChatBot_l37-2__67epL\"};\n    if(true) {\n      // 1745323743889\n      var cssReload = __webpack_require__(/*! ./node_modules/next/dist/compiled/mini-css-extract-plugin/hmr/hotModuleReplacement.js */ \"(app-pages-browser)/./node_modules/next/dist/compiled/mini-css-extract-plugin/hmr/hotModuleReplacement.js\")(module.id, {\"publicPath\":\"/_next/\",\"esModule\":false,\"locals\":true});\n      module.hot.dispose(cssReload);\n      \n    }\n  \nmodule.exports.__checksum = \"d128fc107fc4\"\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiKGFwcC1wYWdlcy1icm93c2VyKS8uL3N0eWxlcy9DaGF0Qm90Lm1vZHVsZS5jc3MiLCJtYXBwaW5ncyI6IkFBQUE7QUFDQSxrQkFBa0I7QUFDbEIsT0FBTyxJQUFVO0FBQ2pCO0FBQ0Esc0JBQXNCLG1CQUFPLENBQUMsd01BQThJLGNBQWMsc0RBQXNEO0FBQ2hQLE1BQU0sVUFBVTtBQUNoQjtBQUNBO0FBQ0E7QUFDQSx5QkFBeUIiLCJzb3VyY2VzIjpbIkM6XFxVc2Vyc1xceW9yZGFcXERlc2t0b3BcXEZyb20gSEREXFxxdWl6LWdlbmVyYXRvci1haVxcY2xpZW50XFxzdHlsZXNcXENoYXRCb3QubW9kdWxlLmNzcyJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyBleHRyYWN0ZWQgYnkgbWluaS1jc3MtZXh0cmFjdC1wbHVnaW5cbm1vZHVsZS5leHBvcnRzID0ge1wiY2hhdENvbnRhaW5lclwiOlwiQ2hhdEJvdF9jaGF0Q29udGFpbmVyX184NjhfUFwiLFwiY2hhdEJveFwiOlwiQ2hhdEJvdF9jaGF0Qm94X19vZlhpd1wiLFwibWVzc2FnZXNDb250YWluZXJcIjpcIkNoYXRCb3RfbWVzc2FnZXNDb250YWluZXJfX1JFdmxWXCIsXCJtZXNzYWdlXCI6XCJDaGF0Qm90X21lc3NhZ2VfX0dfNDd2XCIsXCJ1c2VyTWVzc2FnZVwiOlwiQ2hhdEJvdF91c2VyTWVzc2FnZV9fVzVMYW5cIixcImJvdE1lc3NhZ2VcIjpcIkNoYXRCb3RfYm90TWVzc2FnZV9fWWFqaFhcIixcImxvYWRpbmdcIjpcIkNoYXRCb3RfbG9hZGluZ19fb3dDRVBcIixcImlucHV0Q29udGFpbmVyXCI6XCJDaGF0Qm90X2lucHV0Q29udGFpbmVyX19UMjUxdVwiLFwiaW5wdXRGaWVsZFwiOlwiQ2hhdEJvdF9pbnB1dEZpZWxkX19lRUo5cFwiLFwic2VuZEJ1dHRvblwiOlwiQ2hhdEJvdF9zZW5kQnV0dG9uX183ZDJBcFwiLFwiQnV0dG9uc1wiOlwiQ2hhdEJvdF9CdXR0b25zX19iRjgzdVwiLFwibDM3LTFcIjpcIkNoYXRCb3RfbDM3LTFfXzJwM0NEXCIsXCJsMzctMlwiOlwiQ2hhdEJvdF9sMzctMl9fNjdlcExcIn07XG4gICAgaWYobW9kdWxlLmhvdCkge1xuICAgICAgLy8gMTc0NTMyMzc0Mzg4OVxuICAgICAgdmFyIGNzc1JlbG9hZCA9IHJlcXVpcmUoXCJDOi9Vc2Vycy95b3JkYS9EZXNrdG9wL0Zyb20gSEREL3F1aXotZ2VuZXJhdG9yLWFpL2NsaWVudC9ub2RlX21vZHVsZXMvbmV4dC9kaXN0L2NvbXBpbGVkL21pbmktY3NzLWV4dHJhY3QtcGx1Z2luL2htci9ob3RNb2R1bGVSZXBsYWNlbWVudC5qc1wiKShtb2R1bGUuaWQsIHtcInB1YmxpY1BhdGhcIjpcIi9fbmV4dC9cIixcImVzTW9kdWxlXCI6ZmFsc2UsXCJsb2NhbHNcIjp0cnVlfSk7XG4gICAgICBtb2R1bGUuaG90LmRpc3Bvc2UoY3NzUmVsb2FkKTtcbiAgICAgIFxuICAgIH1cbiAgXG5tb2R1bGUuZXhwb3J0cy5fX2NoZWNrc3VtID0gXCJkMTI4ZmMxMDdmYzRcIlxuIl0sIm5hbWVzIjpbXSwiaWdub3JlTGlzdCI6W10sInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///(app-pages-browser)/./styles/ChatBot.module.css\n"));
+
+/***/ })
+
+});

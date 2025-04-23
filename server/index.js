@@ -6,11 +6,16 @@ import fileUpload from "express-fileupload"; // Import express-fileupload to han
 import path from 'path';
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
+// import pptxParser from 'pptx-parser'; // Make sure to import the correct library
+
 // Resolve the current directory correctly
 const __dirname = path.resolve();
+// const pptx2json = require('pptx2json'); // Add this line to import pptx2json
+
 
 // Debugging the path to ensure it's correct
 console.log("Current directory:", __dirname);
+
 
 // Correct the path to avoid double "C:\"
 const pdfPath = path.join(__dirname, "summary.pdf");
@@ -21,6 +26,7 @@ import textract from "textract"; // Extract text from various file types
 
 import axios from "axios"; // Import axios to make HTTP requests to external APIs
 import Quiz from "./models/Quiz.js"; // Import the Quiz model for saving quiz data in the database
+import { error } from "console";
 
 
 dotenv.config(); // Load environment variables from .env file
@@ -40,12 +46,12 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   // Function to extract text based on file type
 const extractText = async (file) => {
 
-    // if (!file || !file.name || !file.data) {
-    //     throw new Error("❌ File object is missing required properties (name, data).");
-    //   }
+    if (!file || !file.name || !file.data) {
+        throw new Error("❌ File object is missing required properties (name, data).");
+      }
     const fileExtension = file.name.split(".").pop().toLowerCase();
   
-    if (fileExtension === "Pdf") {
+    if (fileExtension === "pdf") {
       const pdfBuffer = file.data;
       const pdfData = await pdfParse(pdfBuffer);
       return pdfData.text;
@@ -58,19 +64,44 @@ const extractText = async (file) => {
       });
     }
   };
+
+  // ✅ /Extract route
+app.post("/Extract", async (req, res) => {
+ 
+
+    console.log("📝 Incoming request:", req.files.file); // Debug request files
+
+  if (!req.files || !req.files.file) {
+    return res.status(400).json({ error: "❌ No file uploaded" });
+  }
+
+const file = req.files.file;
+
+    try {
+      const text = await extractText(file);
+      console.log("here is the extract text:", text);
+      return res.status(200).json({ text: text.trim() });
+    
+    } catch (error) {
+      console.error("Text extraction failed:", error);
+      return res.status(500).json({ error: "Text extraction failed", details: error.message });
+    }
+ 
+});
+ 
   app.post("/upload", async (req, res) => {
     try {
 
-        console.log("📝 Incoming request:", req.files); // Debug request files
+        console.log("📝 Incoming request:", req.body.text); // Debug request files
 
-      if (!req.files || !req.files.file) {
+      if ( !req.body.text) {
         return res.status(400).json({ error: "❌ No file uploaded" });
       }
   
 
     //   const pdfBuffer = req.files.pdf.data;
-    const file = req.files.file;
-    const text = await extractText(file);
+    const text = req.body.text;
+    // const text = await extractText(file);
     //   if (!pdfBuffer) {
     //     return res.status(400).json({ error: "❌ Uploaded file is empty" });
     //   }
@@ -88,9 +119,11 @@ const extractText = async (file) => {
   
       // AI Prompt
       const prompt = `
-Generate exactly 30 quiz questions in strict JSON format. 
-Each question must follow this structure:
+Generate **exactly 30 quiz questions** in strict **raw JSON array format**. Do NOT include *any* explanation or comments. 
 
+Return ONLY the JSON, no markdown, no introduction.
+
+Example format:
 [
   {
     "question": "What is React?",
@@ -160,6 +193,8 @@ Text: "${text}"
       const newQuiz = new Quiz({ quiz: quizData });
       await newQuiz.save();
   
+
+      
       res.status(200).json({ quiz: quizData });
     
         // res.json({ quiz: quizData });
@@ -183,33 +218,78 @@ Text: "${text}"
 //Short note
   app.post("/summarize", async (req, res) => {
     try {
-      if (!req.files || !req.files.file) {
+      console.log("📝 Incoming request:", req.body.text); // Debug request files
+      if (!req.body.text ) {
+        // console.log("just error ")
         return res.status(400).json({ error: "❌ No file uploaded" });
+        
       }
-  
-      const file = req.files.file;
-      let text = "";
-  
+    
+      const text = req.body.text;
+      // let text = "";
+      // console.log("MIME type:", file.mimetype); // Debugging log
+
       // Extract text based on file type
-      if (file.mimetype === "application/pdf") {
-        const data = await pdfParse(file.data);
-        text = data.text;
-      } else if (file.mimetype === "text/plain") {
-        text = file.data.toString("utf-8");
-      } else if (
-        file.mimetype ===
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-      ) {
-        const data = await mammoth.extractRawText({ buffer: file.data });
-        text = data.value;
-      } else {
-        return res.status(400).json({ error: "❌ Unsupported file type" });
-      }
+      // if (file.mimetype === "application/pdf") {
+      //   const data = await pdfParse(file.data);
+      //   text = data.text;
+      // } else if (file.mimetype === "text/plain") {
+      //   text = file.data.toString("utf-8");
+      // } else if (
+      //   file.mimetype ==="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      // ) {
+      //   const data = await mammoth.extractRawText({ buffer: file.data });
+      //   text = data.value;
+      // } else if (
+      //   file.mimetype === "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+      // ) {
+      //   // Handle PowerPoint files
+      //   // const pptxText = await pptxParser.parse(file.data);
+      //   // text = pptxText;
+      //   // Handle PowerPoint files using pptx2json
+      // // try {
+      // //   pptx2json(file.data, function (err, data) {
+      // //     if (err) {
+      // //       console.error("❌ Error parsing PowerPoint file:", err);
+      // //       return res.status(500).json({ error: "❌ Failed to parse PowerPoint file" });
+      // //     }
+
+      // //     // Extract text from slides
+      // //     text = "";
+      // //     data.slides.forEach(slide => {
+      // //       slide.texts.forEach(textElement => {
+      // //         text += textElement.text + " ";  // Concatenate text from each slide
+      // //       });
+      // //     });
+
+      // //     if (!text.trim()) {
+      // //       return res.status(400).json({ error: "❌ PowerPoint contains no readable text" });
+      // //     }
+
+      // //     // Now proceed with summarization logic...
+      // //   });
+
+      // // } catch (error) {
+      // //   console.error("❌ Error parsing PowerPoint file:", error);
+      // //   return res.status(500).json({ error: "❌ Failed to parse PowerPoint file" });
+      // // }
+
+      // try {
+      //   // Parse the PowerPoint file using pptx-parser
+      //   // const data = 
+      //   text = await extractText(file);
+      // } catch (error) {
+      //   console.error("❌ Error parsing PowerPoint file:", error);
+      //   return res.status(500).json({ error: "❌ Failed to parse PowerPoint file" });
+      // }
+      // }else {
+      //   return res.status(400).json({ error: "❌ Unsupported file type" });
+      // }
   
       if (!text.trim()) {
         return res.status(400).json({ error: "❌ File contains no readable text" });
       }
-  
+   
       // AI Prompt for summarization
       const prompt = `Summarize and make a short not of the following text into a short and concise note:\n\n"${text}"`;
   
@@ -258,7 +338,30 @@ Text: "${text}"
      // Try to access the content based on the correct path
      
      // Extract the summary from the content field of the response
+     console.log("🔍 Full AI response:", response.data);
+
      let summary = response.data.choices[0]?.message?.content?.trim();
+
+     if (summary) {
+      // Clean up: remove markdown tables if they exist
+      if (summary.includes("|") && summary.includes("---")) {
+        summary = summary
+          .split("\n")
+          .filter(
+            (line) =>
+              !line.trim().startsWith("|") && !line.includes("---") // remove table rows and dividers
+          )
+          .join("\n");
+      }
+
+      // Strip markdown headers and formatting
+      summary = summary
+        .replace(/###\s?/g, "") // remove h3 markdown
+        .replace(/\*\*(.*?)\*\*/g, "$1") // remove bold markdown
+        .replace(/`(.*?)`/g, "$1") // remove inline code markdown
+        .replace(/\*/g, "") // remove asterisks used in bullet points
+        .trim();
+
 
      if (!summary) {
        console.error("❌ AI Response does not contain valid content:", JSON.stringify(response.data, null, 2));
@@ -266,6 +369,9 @@ Text: "${text}"
      }
  
      console.log("✅ AI Generated Summary:", summary);
+    }else{
+      console.log("failed to generate")
+     }
 
      // Generate PDF file with the summary
 const pdfPath = path.join(__dirname, "summary.pdf");
@@ -335,6 +441,101 @@ app.get("/quizzes", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch quizzes" }); // Handle errors if fetching quizzes fails
   }
 });
+app.post("/chatbot", async (req, res) => {
+  try {
+    const message = req.body.message;             // Extract the user message from the form data
+    const data = req.body.text;                // Get the uploaded file
+
+    console.log("📨 Received message:", req.body.message);
+  console.log("📎 Received file:", req.body.text);
+
+    if (!message) {
+      return res.status(400).json({ error: "❌ Message is required" }); // Return error if message is missing
+    }
+    // Extract text from the uploaded file if it exists
+    // let extractedText = "";
+    // if (file) {
+    //   console.log("📦 Uploaded file info:", file);
+    //   extractedText = await extractText(file);
+    //   console.log("📄 Extracted text (first 500 chars):", extractedText.slice(0, 500));
+
+    // }
+
+     // Construct the prompt with file content (if any)
+     const prompt = `
+     You're a friendly assistant. Give simple, clear, helpful responses without markdown or tables unless explicitly asked. Keep it beginner-friendly.
+     
+     Context from uploaded data:
+     ${data}
+     
+     User: ${message}
+     `;
+    // Make the API call to the OpenRouter AI endpoint
+    const response = await axios.post(
+      "https://openrouter.ai/api/v1/chat/completions",
+      {
+        model: "deepseek/deepseek-r1:free", // AI model
+        messages: [{ role: "user", content: prompt }], // Pass prompt to AI
+        temperature: 0.7, // Slight creativity
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`, // Secure API key
+          "Content-Type": "application/json", // Request format
+        },
+      }
+    );
+
+    // Log the raw AI response
+    console.log("Raw AI Response:", response.data);
+
+    if (response.data.choices && response.data.choices.length > 0) {
+      let reply = response.data.choices[0]?.message?.content?.trim();
+
+      if (reply) {
+        // Clean up: remove markdown tables if they exist
+        if (reply.includes("|") && reply.includes("---")) {
+          reply = reply
+            .split("\n")
+            .filter(
+              (line) =>
+                !line.trim().startsWith("|") && !line.includes("---") // remove table rows and dividers
+            )
+            .join("\n");
+        }
+
+        // Strip markdown headers and formatting
+        reply = reply
+          .replace(/###\s?/g, "") // remove h3 markdown
+          .replace(/\*\*(.*?)\*\*/g, "$1") // remove bold markdown
+          .replace(/`(.*?)`/g, "$1") // remove inline code markdown
+          .replace(/\*/g, "") // remove asterisks used in bullet points
+          .trim();
+
+        // Final formatted message
+        const formattedReply = `
+
+
+💬 Here's what I found:
+
+${reply}
+
+🙋 Want to dive deeper? Just ask!
+        `;
+
+        return res.json({ reply: formattedReply }); // Send response to frontend
+      } else {
+        return res.status(500).json({ error: "AI response does not contain content." });
+      }
+    } else {
+      return res.status(500).json({ error: "Invalid response from AI." });
+    }
+  } catch (error) {
+    console.error("Chatbot Error:", error); // Log error
+    res.status(500).json({ error: "Failed to get a response from AI" });
+  }
+});
+
 
 // Set up the server to listen on the specified port
 const PORT = process.env.PORT || 5000;

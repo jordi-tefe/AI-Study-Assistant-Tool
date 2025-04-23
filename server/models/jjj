@@ -1,0 +1,65 @@
+// Define the route that handles chatbot messages
+app.post("/chatbot", async (req, res) => {
+  try {
+    // Step 1: Destructure `message` from the request body
+    const { message } = req.body;
+
+    // Step 2: Validate input
+    if (!message) {
+      return res.status(400).json({ error: "❌ Message is required" }); // Client must send a message
+    }
+
+    // Step 3: Create a prompt for the AI
+    const prompt = `You are a helpful and friendly AI assistant. Give clear, beginner-friendly and conversational answers.\nUser: ${message}`;
+
+    // Step 4: Call the AI API with the prompt
+    const response = await axios.post(
+      "https://openrouter.ai/api/v1/chat/completions", // Endpoint for OpenRouter
+      {
+        model: "deepseek/deepseek-r1:free", // Model used for response generation
+        messages: [{ role: "user", content: prompt }], // Message array with user's message
+        temperature: 0.7, // Controls creativity of the response
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`, // Secure API key from environment variable
+          "Content-Type": "application/json", // Required content type
+        },
+      }
+    );
+
+    // Step 5: Debug log - log full response
+    console.log("Raw AI Response:", response.data);
+
+    // Step 6: Check if the response contains a valid message
+    if (response.data.choices && response.data.choices.length > 0) {
+      const reply = response.data.choices[0]?.message?.content?.trim(); // Extract and trim reply
+
+      // Step 7: If we have a valid reply, reformat it nicely
+      if (reply) {
+        // Prepare a more conversational and attractive format
+        const formattedReply = `
+
+💡 **Here's what I found for you:**
+
+${reply}
+
+📚 **Want to explore this topic more?** Just ask, and I'm happy to help!
+        `;
+
+        // Step 8: Return the formatted message to the client
+        return res.json({ reply: formattedReply });
+      } else {
+        // AI response didn't include usable content
+        return res.status(500).json({ error: "AI response does not contain content." });
+      }
+    } else {
+      // AI response didn't follow expected structure
+      return res.status(500).json({ error: "Invalid response from AI." });
+    }
+  } catch (error) {
+    // Catch and log any unexpected errors
+    console.error("Chatbot Error:", error);
+    res.status(500).json({ error: "Failed to get a response from AI" });
+  }
+});
