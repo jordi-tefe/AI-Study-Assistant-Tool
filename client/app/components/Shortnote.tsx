@@ -21,7 +21,7 @@ const ShortNote: React.FC<ShortNoteProps> = ({ file,text }) => {
     // formData.append("file", file);
 
     try {
-      const response = await axios.post("http://localhost:5000/summarize", {text} ,{
+      const response = await axios.post("ai-study-assistant-tool-production.up.railway.app/summarize", {text} ,{
         responseType: "blob", // Expecting a PDF
       });
 

@@ -35,7 +35,7 @@ const app = express(); // Create an instance of the express app
 
 // Middleware to handle CORS and JSON requests 
 app.use(cors({
-  origin:[ "https://l8n8n6b3-3001.uks1.devtunnels.ms/", "http://localhost:3001"],
+  origin:[ "https://ai-study-assistant-tool-d869.vercel.app/","https://l8n8n6b3-3001.uks1.devtunnels.ms/", "http://localhost:3001"],
     
   methods: "GET,POST,PUT,DELETE",
   credentials: true
@@ -44,7 +44,7 @@ app.use(express.json());
 app.use(fileUpload()); // Middleware for handling file uploads
  
 // MongoDB connection using Mongoose
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URI, {  })
   .then(() => console.log("✅ MongoDB Connected")) // If connection is successful
   .catch((err) => console.log("❌ MongoDB Error:", err)); // Log errors if any
 

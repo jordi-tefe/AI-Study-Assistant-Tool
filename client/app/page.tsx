@@ -43,7 +43,7 @@ export default function Home() {
       formData.append("file", selectedFile);
   
       try {
-      const response=  await axios.post("http://localhost:5000/Extract", formData, {
+      const response=  await axios.post("ai-study-assistant-tool-production.up.railway.app/Extract", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
