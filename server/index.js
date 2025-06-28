@@ -35,7 +35,9 @@ const app = express(); // Create an instance of the express app
 
 // Middleware to handle CORS and JSON requests 
 app.use(cors({
+
   origin:"https://ai-study-assistant-tool-d869.vercel.app",
+  //  origin:"http://localhost:3001",
     
   methods: ["GET,POST,PUT,DELETE"],
    allowedHeaders: ["Content-Type", "Authorization"],
@@ -46,8 +48,8 @@ app.use(express.json());
 // app.use(fileUpload()); // Middleware for handling file uploads
 app.use(
   fileUpload({
-    useTempFiles: true, // store uploads in /tmp so large files work
-    tempFileDir: "/tmp/",
+    useTempFiles: false, // store uploads in /tmp so large files work
+    // tempFileDir: "/tmp/",
     limits: { fileSize: 20 * 1024 * 1024 }, // ✅ Allow up to 20MB files
     
   })
