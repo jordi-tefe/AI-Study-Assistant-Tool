@@ -42,7 +42,7 @@ app.use(cors({
 }));   
 app.use(express.json());
 app.use(fileUpload()); // Middleware for handling file uploads
- 
+  
 // MongoDB connection using Mongoose
 mongoose.connect(process.env.MONGO_URI, {  })
   .then(() => console.log("✅ MongoDB Connected")) // If connection is successful
