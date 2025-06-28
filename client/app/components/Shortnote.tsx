@@ -59,9 +59,20 @@ const ShortNote: React.FC<ShortNoteProps> = ({ file,text }) => {
         className={styles.uploadButton}
       > */}
         {loading ?  (
-  <div className={styles["loader"]}>
+  // <div className={styles["loader"]}>
+
+<div className={styles["dot-spinner"]}>
+   <div className={styles["dot-spinner__dot"]}></div>
+   <div className={styles["dot-spinner__dot"]}></div>
+   <div className={styles["dot-spinner__dot"]}></div>
+   <div className={styles["dot-spinner__dot"]}></div>
+   <div className={styles["dot-spinner__dot"]}></div>
+   <div className={styles["dot-spinner__dot"]}></div>
+   <div className={styles["dot-spinner__dot"]}></div>
+   <div className={styles["dot-spinner__dot"]}></div>
+</div>
     
-  </div>
+  // </div>
 )
  : (<button
   onClick={handleUpload}

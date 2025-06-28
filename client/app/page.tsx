@@ -89,9 +89,9 @@ export default function Home() {
       <div ref={shortNoteRef} className="content-section">
         <div className="toggle-buttons">
            {loading ?  (
-  <div > <h3>...Processs</h3>
+  <div className="loader"></div> 
     
-  </div>):  ( 
+ ):  ( 
      <>
   
           <button

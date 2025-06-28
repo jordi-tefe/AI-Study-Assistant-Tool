@@ -39,10 +39,21 @@ const UploadQuiz: React.FC<UploadQuizProps> = ({ setQuiz, file ,text}) => {
   return (
     <div className={styles.uploadContainer}>
       {/* <button onClick={handleUpload} disabled={loading || !text} className={styles.uploadButton}> */}
-        {loading ? (
-  <div className={styles["loader"]}>
+       {loading ?  (
+  // <div className={styles["loader"]}>
+
+<div className={styles["dot-spinner"]}>
+   <div className={styles["dot-spinner__dot"]}></div>
+   <div className={styles["dot-spinner__dot"]}></div>
+   <div className={styles["dot-spinner__dot"]}></div>
+   <div className={styles["dot-spinner__dot"]}></div>
+   <div className={styles["dot-spinner__dot"]}></div>
+   <div className={styles["dot-spinner__dot"]}></div>
+   <div className={styles["dot-spinner__dot"]}></div>
+   <div className={styles["dot-spinner__dot"]}></div>
+</div>
     
-  </div>
+  // </div>
 ) :
          ( 
          <button onClick={handleUpload} disabled={loading || !text} className={styles.uploadButton}> 
