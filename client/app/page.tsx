@@ -88,12 +88,16 @@ export default function Home() {
 
       <div ref={shortNoteRef} className="content-section">
         <div className="toggle-buttons">
+           {loading ?  (
+  <div > <h3>...Processs</h3>
+    
+  </div>):  
           <button
             className={activeComponent === "shortnote" ? "active" : ""}
             onClick={() => setActiveComponent("shortnote")}
           >
             Short Notes Generator
-          </button>
+          </button> }
           <button
             className={activeComponent === "quiz" ? "active" : ""}
             onClick={() => setActiveComponent("quiz")}
@@ -107,10 +111,7 @@ export default function Home() {
             ChatBot
           </button>
         </div>
-        {loading ?  (
-  <div > <h3>...Processs</h3>
-    
-  </div>): "upload a file" }
+       
 
         {activeComponent === "shortnote" && (
           <>
