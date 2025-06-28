@@ -35,7 +35,7 @@ const app = express(); // Create an instance of the express app
 
 // Middleware to handle CORS and JSON requests 
 app.use(cors({
-  origin:"https://ai-study-assistant-tool-d869.vercel.app",
+  origin:"*",
     
   methods: "GET,POST,PUT,DELETE",
    allowedHeaders: ["Content-Type", "Authorization"],
