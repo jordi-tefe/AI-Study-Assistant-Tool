@@ -44,7 +44,7 @@ export default function Home() {
   
       try {
         // const response=  await axios.post("http://localhost:5001/Extract", formData, {
-      const response=  await axios.post("http://ai-study-assistant-tool-production.up.railway.app/Extract", formData, {
+      const response=  await axios.post("https://ai-study-assistant-tool-production.up.railway.app/Extract", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

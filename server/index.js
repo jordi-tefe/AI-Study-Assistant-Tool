@@ -35,15 +35,21 @@ const app = express(); // Create an instance of the express app
 
 // Middleware to handle CORS and JSON requests 
 app.use(cors({
-  origin:"*",
+  origin:"https://ai-study-assistant-tool-d869.vercel.app",
     
-  methods: "GET,POST,PUT,DELETE",
+  methods: ["GET,POST,PUT,DELETE"],
    allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));  
 
 app.use(express.json());
-app.use(fileUpload()); // Middleware for handling file uploads
+// app.use(fileUpload()); // Middleware for handling file uploads
+app.use(fileUpload({
+  useTempFiles: true,
+  tempFileDir: "/tmp/",
+  limits: { fileSize: 5 * 1024 * 1024 } // 5 MB
+}));
+
   
 // MongoDB connection using Mongoose
 mongoose.connect(process.env.MONGO_URI, {  })
@@ -72,6 +78,9 @@ const extractText = async (file) => {
     }
   };
 
+  app.get("/health", (req, res) => {
+  res.send("✅ API is working");
+});
   // ✅ /Extract route
 app.post("/Extract", async (req, res) => {
  
