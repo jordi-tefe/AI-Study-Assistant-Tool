@@ -14,6 +14,7 @@ export default function Home() {
   const router = useRouter();
   const [quiz, setQuiz] = useState<any>(null);
   const [text, setText] = useState<string>("");
+  const [loading, setLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const shortNoteRef = useRef<HTMLDivElement>(null);
   const [activeComponent, setActiveComponent] = useState<"shortnote" | "quiz" | "chatbot">("shortnote");
@@ -34,6 +35,7 @@ export default function Home() {
     // if (event.target.files && event.target.files[0]) {
     //   setFile(event.target.files[0]);
     // }
+    setLoading(true);
 
     if (event.target.files && event.target.files[0]) {
       const selectedFile = event.target.files[0];
@@ -52,9 +54,12 @@ export default function Home() {
         console.log("Response Data:", response.data); // ✅ Log response correctly
         const data = await response.data;
         setText(data.text); // 👈 save extracted text
+        
       } catch (error) {
         console.error("Error extracting text:", error);
         alert("Error extracting text:"+ error);
+      } finally{
+        setLoading(true);
       }
     }
   };
@@ -102,6 +107,10 @@ export default function Home() {
             ChatBot
           </button>
         </div>
+        {loading ?  (
+  <div > <h3>...Processs</h3>
+    
+  </div>): "upload a file" }
 
         {activeComponent === "shortnote" && (
           <>
