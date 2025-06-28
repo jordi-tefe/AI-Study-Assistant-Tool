@@ -43,12 +43,16 @@ app.use(cors({
 }));  
 
 app.use(express.json());
-app.use(fileUpload()); // Middleware for handling file uploads
-// app.use(fileUpload({
-//   useTempFiles: true,
-//   tempFileDir: "/tmp/",
-//   limits: { fileSize: 5 * 1024 * 1024 } // 5 MB
-// }));
+// app.use(fileUpload()); // Middleware for handling file uploads
+app.use(
+  fileUpload({
+    useTempFiles: true, // store uploads in /tmp so large files work
+    tempFileDir: "/tmp/",
+    limits: { fileSize: 20 * 1024 * 1024 }, // ✅ Allow up to 20MB files
+    createParentPath: true,
+    debug: true, // helpful for troubleshooting
+  })
+);
 
   
 // MongoDB connection using Mongoose
