@@ -75,7 +75,7 @@ const extractText = async (file) => {
   // ✅ /Extract route
 app.post("/Extract", async (req, res) => {
  
-
+console.log("✅ /Extract route hit"); // ADD THIS
     console.log("📝 Incoming request:", req.files.file); // Debug request files
 
   if (!req.files || !req.files.file) {
@@ -555,8 +555,10 @@ ${reply}
 
 // Set up the server to listen on the specified port
 const PORT = process.env.PORT;
-app.listen(PORT,'0.0.0.0', () => console.log(`🚀 Server running on port ${PORT}`));
-
+// app.listen(PORT,'0.0.0.0', () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
 
 // fetch("https://openrouter.ai/api/v1/chat/completions", {
 //     method: "POST",
