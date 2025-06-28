@@ -65,67 +65,68 @@ export default function Home() {
 // }, [text]);
 
   return (
-    <main className="main-container">
-      <WelcomePage onGetStartedClick={handleGetStarted} />
+//     <main className="main-container">
+//       <WelcomePage onGetStartedClick={handleGetStarted} />
 
-      <div className="upload-bar">
-  <label className="customFileUpload">
-    <input
-      type="file"
-      accept=".pdf, .txt, .docx, .pptx"
-      onChange={handleFileChange}
-    />
-    {file ? `📄 ${file.name}` : "📤 Click to Upload File"}
-  </label>
-</div>
+//       <div className="upload-bar">
+//   <label className="customFileUpload">
+//     <input
+//       type="file"
+//       accept=".pdf, .txt, .docx, .pptx"
+//       onChange={handleFileChange}
+//     />
+//     {file ? `📄 ${file.name}` : "📤 Click to Upload File"}
+//   </label>
+// </div>
 
 
-      <div ref={shortNoteRef} className="content-section">
-        <div className="toggle-buttons">
-          <button
-            className={activeComponent === "shortnote" ? "active" : ""}
-            onClick={() => setActiveComponent("shortnote")}
-          >
-            Short Note Generator
-          </button>
-          <button
-            className={activeComponent === "quiz" ? "active" : ""}
-            onClick={() => setActiveComponent("quiz")}
-          >
-            Quiz Generator
-          </button>
-          <button
-            className={activeComponent === "chatbot" ? "active" : ""}
-            onClick={() => setActiveComponent("chatbot")}
-          >
-            ChatBot
-          </button>
-        </div>
+//       <div ref={shortNoteRef} className="content-section">
+//         <div className="toggle-buttons">
+//           <button
+//             className={activeComponent === "shortnote" ? "active" : ""}
+//             onClick={() => setActiveComponent("shortnote")}
+//           >
+//             Short Note Generator
+//           </button>
+//           <button
+//             className={activeComponent === "quiz" ? "active" : ""}
+//             onClick={() => setActiveComponent("quiz")}
+//           >
+//             Quiz Generator
+//           </button>
+//           <button
+//             className={activeComponent === "chatbot" ? "active" : ""}
+//             onClick={() => setActiveComponent("chatbot")}
+//           >
+//             ChatBot
+//           </button>
+//         </div>
 
-        {activeComponent === "shortnote" && (
-          <>
-            <h1>AI Short Note Generator</h1>
-            <ShortNote text={text} />
-          </>
-        )}
+//         {activeComponent === "shortnote" && (
+//           <>
+//             <h1>AI Short Note Generator</h1>
+//             <ShortNote text={text} />
+//           </>
+//         )}
 
-        {activeComponent === "quiz" && (
-          <>
-            <h1>AI Quiz Generator</h1>
-            <UploadQuiz text={text} setQuiz={handleQuizGenerated} />
-            {/* {text : Here is the quiz} */}
-            {quiz && <Quiz quiz={quiz} />} {/* This renders the quiz after generation */}
-          </>
-        )}
+//         {activeComponent === "quiz" && (
+//           <>
+//             <h1>AI Quiz Generator</h1>
+//             <UploadQuiz text={text} setQuiz={handleQuizGenerated} />
+//             {/* {text : Here is the quiz} */}
+//             {quiz && <Quiz quiz={quiz} />} {/* This renders the quiz after generation */}
+//           </>
+//         )}
 
-        {activeComponent === "chatbot" && (
-          <>
-            <h1>AI ChatBot</h1>
-            <ChatBot text={text} />
-          </>
-        )}
-      </div>
-    </main>
+//         {activeComponent === "chatbot" && (
+//           <>
+//             <h1>AI ChatBot</h1>
+//             <ChatBot text={text} />
+//           </>
+//         )}
+//       </div>
+//     </main>
+<h1>hello</h1>
   );
 }
 
@@ -174,12 +175,14 @@ export default function Home() {
 //             className={activeComponent === "shortnote" ? "active" : ""}
 //             onClick={() => setActiveComponent("shortnote")}
 //           >
+
 //             Short Note Generator
 //           </button>
 //           <button
 //             className={activeComponent === "quiz" ? "active" : ""}
 //             onClick={() => setActiveComponent("quiz")}
 //           >
+
 //             Quiz Generator
 //           </button>
 //           <button
