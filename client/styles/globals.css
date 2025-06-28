@@ -113,7 +113,7 @@ html {
 .loader {
   width: 100px;
   height: 20px;
-  box-shadow: 0 3px 0 #ff7272;
+  box-shadow: 0 3px 0 #27ae60;
   position: relative;
   clip-path: inset(-40px 0 -5px);
 }
@@ -123,7 +123,7 @@ html {
   position: absolute;
   inset: auto calc(50% - 17px) 0;
   height: 50px;
-  --g: no-repeat linear-gradient(#ff4e4e 0 0);
+  --g: no-repeat linear-gradient(#27ae60 0 0);
   background: var(--g), var(--g), var(--g), var(--g);
   background-size: 16px 14px;
   animation:
