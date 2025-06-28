@@ -59,7 +59,7 @@ export default function Home() {
         console.error("Error extracting text:", error);
         alert("Error extracting text:"+ error);
       } finally{
-        setLoading(true);
+        setLoading(false);
       }
     }
   };
@@ -91,13 +91,15 @@ export default function Home() {
            {loading ?  (
   <div > <h3>...Processs</h3>
     
-  </div>):  
+  </div>):  ( 
+     <>
+  
           <button
             className={activeComponent === "shortnote" ? "active" : ""}
             onClick={() => setActiveComponent("shortnote")}
           >
             Short Notes Generator
-          </button> }
+          </button> 
           <button
             className={activeComponent === "quiz" ? "active" : ""}
             onClick={() => setActiveComponent("quiz")}
@@ -110,7 +112,10 @@ export default function Home() {
           >
             ChatBot
           </button>
-        </div>
+           </> 
+      )}
+        </div> 
+     
        
 
         {activeComponent === "shortnote" && (
