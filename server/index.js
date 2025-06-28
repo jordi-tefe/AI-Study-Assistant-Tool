@@ -49,8 +49,7 @@ app.use(
     useTempFiles: true, // store uploads in /tmp so large files work
     tempFileDir: "/tmp/",
     limits: { fileSize: 20 * 1024 * 1024 }, // ✅ Allow up to 20MB files
-    createParentPath: true,
-    debug: true, // helpful for troubleshooting
+    
   })
 );
 
@@ -66,6 +65,7 @@ const extractText = async (file) => {
     if (!file || !file.name || !file.data) {
         throw new Error("❌ File object is missing required properties (name, data).");
       }
+      
     const fileExtension = file.name.split(".").pop().toLowerCase();
   
     if (fileExtension === "pdf") {
@@ -93,7 +93,12 @@ console.log("✅ /Extract route hit"); // ADD THIS
 
   if (!req.files || !req.files.file) {
     return res.status(400).json({ error: "❌ No file uploaded" });
+
   }
+  if (req.files.file.truncated) {
+  return res.status(400).json({ error: "File upload was truncated. Possibly too large or blocked by host." });
+}
+
 
 const file = req.files.file;
 
