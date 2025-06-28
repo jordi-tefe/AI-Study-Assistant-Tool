@@ -48,7 +48,7 @@ export default function Home() {
             "Content-Type": "multipart/form-data",
           },
         });
-        
+        console.log("Response Data:", response.data); // ✅ Log response correctly
         const data = await response.data;
         setText(data.text); // 👈 save extracted text
       } catch (error) {

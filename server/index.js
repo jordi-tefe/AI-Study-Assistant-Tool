@@ -34,36 +34,13 @@ dotenv.config(); // Load environment variables from .env file
 const app = express(); // Create an instance of the express app
 
 // Middleware to handle CORS and JSON requests 
-// app.use(cors({
-//   origin:"https://ai-study-assistant-tool-d869.vercel.app",
-    
-//   methods: "GET,POST,PUT,DELETE",
-//   credentials: true
-// }));  
-
-// CORS middleware (⚠️ apply before all routes)
-const allowedOrigins = [
-  "https://ai-study-assistant-tool-d869.vercel.app", // your Vercel frontend
-];
-
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true); // allow the request
-    } else {
-      callback(new Error("❌ CORS policy doesn't allow access from the specified origin."));
-    }
-  },
-  methods: "GET,POST,PUT,DELETE,OPTIONS",
-  credentials: true,
-}));
-
-// ✅ Handle preflight OPTIONS requests
-app.options("*", cors());
-app.use((req, res, next) => {
-  console.log(`📥 ${req.method} ${req.url}`);
-  next();
-});
+  origin:"https://ai-study-assistant-tool-d869.vercel.app",
+    
+  methods: "GET,POST,PUT,DELETE",
+   allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+}));  
 
 app.use(express.json());
 app.use(fileUpload()); // Middleware for handling file uploads
