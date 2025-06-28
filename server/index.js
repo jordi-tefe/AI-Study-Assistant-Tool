@@ -35,18 +35,11 @@ const app = express(); // Create an instance of the express app
 
 // Middleware to handle CORS and JSON requests 
 app.use(cors({
-  origin:"*",
+  origin:"https://ai-study-assistant-tool-d869.vercel.app",
     
   methods: "GET,POST,PUT,DELETE",
   credentials: true
 }));  
-// Force sending CORS headers
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://ai-study-assistant-tool-d869.vercel.app");
-  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
 
 app.use(express.json());
 app.use(fileUpload()); // Middleware for handling file uploads
