@@ -44,7 +44,11 @@ app.use(cors({
   credentials: true
 }));  
 
-app.use(express.json());
+// app.use(express.json());
+// Middleware for parsing JSON and url-encoded bodies with larger size
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
 // app.use(fileUpload()); // Middleware for handling file uploads
 app.use(
   fileUpload({
