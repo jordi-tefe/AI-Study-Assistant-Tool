@@ -23,7 +23,7 @@ const UploadQuiz: React.FC<UploadQuizProps> = ({ setQuiz, file ,text}) => {
     // formData.append("file", file);
 
     try {
-    const response = await axios.post("http://localhost:5000/upload", {text});
+    const response = await axios.post("https://ai-study-assistant-tool.onrender.com/upload", {text});
 
       setQuiz(response.data.quiz);
       localStorage.setItem("quiz", JSON.stringify(response.data.quiz));

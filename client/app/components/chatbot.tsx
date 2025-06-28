@@ -40,7 +40,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ file, text }) => {
       //   formData.append('file', file); // If there's a file, add it to the form data
       // }
       // Send the user input to the backend to generate AI response
-      const response = await axios.post('http://localhost:5000/chatbot', {
+      const response = await axios.post('https://ai-study-assistant-tool.onrender.com/chatbot', {
         text: text,
         message: userInput,
       });
