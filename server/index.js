@@ -552,7 +552,7 @@ ${reply}
 
 
 // Set up the server to listen on the specified port
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 app.listen(PORT,'0.0.0.0', () => console.log(`🚀 Server running on port ${PORT}`));
 
 
