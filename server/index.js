@@ -6,9 +6,6 @@ import fileUpload from "express-fileupload"; // Import express-fileupload to han
 import path from 'path';
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
-import multer from 'multer';
-import pdfParse from 'pdf-parse';
-import textract from 'textract';
 // import pptxParser from 'pptx-parser'; // Make sure to import the correct library
 
 // Resolve the current directory correctly
@@ -24,8 +21,8 @@ console.log("Current directory:", __dirname);
 const pdfPath = path.join(__dirname, "summary.pdf");
 
 // import pdfParse from "pdf-parse"; // Import pdf-parse to read content from PDF files
-// import pdfParse from "pdf-parse/lib/pdf-parse.js";
-// import textract from "textract"; // Extract text from various file types
+import pdfParse from "pdf-parse/lib/pdf-parse.js";
+import textract from "textract"; // Extract text from various file types
 
 import axios from "axios"; // Import axios to make HTTP requests to external APIs
 import Quiz from "./models/Quiz.js"; // Import the Quiz model for saving quiz data in the database
@@ -62,105 +59,59 @@ mongoose.connect(process.env.MONGO_URI, {  })
   .then(() => console.log("✅ MongoDB Connected")) // If connection is successful
   .catch((err) => console.log("❌ MongoDB Error:", err)); // Log errors if any
 
-  // Configure multer storage and limits
-const upload = multer({
-  dest: '/tmp/', // temporary folder to store files
-  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB max file size
-  // No fileFilter, so all file types allowed
-});
-
   // Function to extract text based on file type
-// const extractText = async (file) => {
+const extractText = async (file) => {
 
-//     if (!file || !file.name || !file.data) {
-//         throw new Error("❌ File object is missing required properties (name, data).");
-//       }
+    if (!file || !file.name || !file.data) {
+        throw new Error("❌ File object is missing required properties (name, data).");
+      }
       
-//     const fileExtension = file.name.split(".").pop().toLowerCase();
+    const fileExtension = file.name.split(".").pop().toLowerCase();
   
-//     if (fileExtension === "pdf") {
-//       const pdfBuffer = file.data;
-//       const pdfData = await pdfParse(pdfBuffer);
-//       return pdfData.text;
-//     } else {
-//       return new Promise((resolve, reject) => {
-//         textract.fromBufferWithMime(file.mimetype, file.data, (error, text) => {
-//           if (error) reject(error);
-//           else resolve(text);
-//         });
-//       });
-//     }
-//   };
-
-//   app.get("/health", (req, res) => {
-//   res.send("✅ API is working");
-// });
-//   // ✅ /Extract route
-// app.post("/Extract", async (req, res) => {
- 
-// console.log("✅ /Extract route hit"); // ADD THIS
-//     console.log("📝 Incoming request:", req.files.file); // Debug request files
-
-//   if (!req.files || !req.files.file) {
-//     return res.status(400).json({ error: "❌ No file uploaded" });
-
-//   }
-//   if (req.files.file.truncated) {
-//   return res.status(400).json({ error: "File upload was truncated. Possibly too large or blocked by host." });
-// }
-
-
-// const file = req.files.file;
-
-//     try {
-//       const text = await extractText(file);
-//       // console.log("here is the extract text:", text);
-//       return res.status(200).json({ text: text.trim() });
-    
-//     } catch (error) {
-//       console.error("Text extraction failed:", error);
-//       return res.status(500).json({ error: "Text extraction failed", details: error.message });
-//     }
-  
-// });
-
-// Your /Extract route
-app.post('/Extract', upload.single('file'), async (req, res) => {
-  console.log("✅ /Extract route hit");
-
-  if (!req.file) {
-    return res.status(400).json({ error: "No file uploaded" });
-  }
-
-  try {
-    const filePath = req.file.path;
-    const fileBuffer = fs.readFileSync(filePath);
-
-    let text;
-
-    // Detect PDF mimetype and parse accordingly
-    if (req.file.mimetype === 'application/pdf') {
-      const pdfData = await pdfParse(fileBuffer);
-      text = pdfData.text;
+    if (fileExtension === "pdf") {
+      const pdfBuffer = file.data;
+      const pdfData = await pdfParse(pdfBuffer);
+      return pdfData.text;
     } else {
-      // For other file types, use textract to extract text
-      text = await new Promise((resolve, reject) => {
-        textract.fromFileWithPath(filePath, (err, result) => {
-          if (err) reject(err);
-          else resolve(result);
+      return new Promise((resolve, reject) => {
+        textract.fromBufferWithMime(file.mimetype, file.data, (error, text) => {
+          if (error) reject(error);
+          else resolve(text);
         });
       });
     }
+  };
 
-    // Optionally delete file after processing
-    fs.unlinkSync(filePath);
+  app.get("/health", (req, res) => {
+  res.send("✅ API is working");
+});
+  // ✅ /Extract route
+app.post("/Extract", async (req, res) => {
+ 
+console.log("✅ /Extract route hit"); // ADD THIS
+    console.log("📝 Incoming request:", req.files.file); // Debug request files
 
-    res.status(200).json({ text: text.trim() });
+  if (!req.files || !req.files.file) {
+    return res.status(400).json({ error: "❌ No file uploaded" });
 
-  } catch (err) {
-    console.error("Text extraction failed:", err);
-    res.status(500).json({ error: "Text extraction failed", details: err.message });
   }
+  if (req.files.file.truncated) {
+  return res.status(400).json({ error: "File upload was truncated. Possibly too large or blocked by host." });
+}
+
+
+const file = req.files.file;
+
+    try {
+      const text = await extractText(file);
+      // console.log("here is the extract text:", text);
+      return res.status(200).json({ text: text.trim() });
+    
+    } catch (error) {
+      console.error("Text extraction failed:", error);
+      return res.status(500).json({ error: "Text extraction failed", details: error.message });
+    }
+  
 });
  
   app.post("/upload", async (req, res) => {
