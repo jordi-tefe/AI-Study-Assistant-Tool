@@ -33,11 +33,16 @@ dotenv.config(); // Load environment variables from .env file
 
 const app = express(); // Create an instance of the express app
 
-// Middleware to handle CORS and JSON requests
-app.use(cors()); 
+// Middleware to handle CORS and JSON requests 
+app.use(cors({
+  origin:[ "https://l8n8n6b3-3001.uks1.devtunnels.ms/", "http://localhost:3001"],
+    
+  methods: "GET,POST,PUT,DELETE",
+  credentials: true
+}));   
 app.use(express.json());
 app.use(fileUpload()); // Middleware for handling file uploads
-
+ 
 // MongoDB connection using Mongoose
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("✅ MongoDB Connected")) // If connection is successful
@@ -79,14 +84,14 @@ const file = req.files.file;
 
     try {
       const text = await extractText(file);
-      console.log("here is the extract text:", text);
+      // console.log("here is the extract text:", text);
       return res.status(200).json({ text: text.trim() });
     
     } catch (error) {
       console.error("Text extraction failed:", error);
       return res.status(500).json({ error: "Text extraction failed", details: error.message });
     }
- 
+  
 });
  
   app.post("/upload", async (req, res) => {
@@ -119,7 +124,15 @@ const file = req.files.file;
   
       // AI Prompt
       const prompt = `
-Generate **exactly 30 quiz questions** in strict **raw JSON array format**. Do NOT include *any* explanation or comments. 
+Generate **exactly 50 quiz questions** in strict **raw JSON array format**. Do NOT include *any* explanation or comments.
+
+Each item must include:
+- "question": the question
+- "options": an array of 4 options
+- "correctAnswer": the correct option string
+- "explanation": a paragraph that explains:
+    1. Why the correct answer is the best
+    2. Why each of the other 3 options is incorrect
 
 Return ONLY the JSON, no markdown, no introduction.
 
@@ -129,14 +142,14 @@ Example format:
     "question": "What is React?",
     "options": ["Library", "Framework", "Language", "Database"],
     "correctAnswer": "Library",
-    "explanation": "React is a JavaScript library."
+    "explanation": "React is a JavaScript library for building user interfaces, especially single-page applications. It is not a framework because it focuses on the view layer only, unlike full-featured frameworks. It is not a programming language—it uses JavaScript. It is also not a database, as it doesn't handle data storage."
   }
 ]
-  
 
 DO NOT include any additional text or explanations—return only valid JSON.
 Text: "${text}"
 `;
+
 
   
       console.log("📩 Sending request to OpenAI:", prompt); // ✅ Debugging log
@@ -516,6 +529,7 @@ app.post("/chatbot", async (req, res) => {
         const formattedReply = `
 
 
+
 💬 Here's what I found:
 
 ${reply}
@@ -539,7 +553,7 @@ ${reply}
 
 // Set up the server to listen on the specified port
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT,'0.0.0.0', () => console.log(`🚀 Server running on port ${PORT}`));
 
 
 // fetch("https://openrouter.ai/api/v1/chat/completions", {

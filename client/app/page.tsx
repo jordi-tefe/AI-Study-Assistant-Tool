@@ -113,7 +113,7 @@ export default function Home() {
           <>
             <h1>AI Quiz Generator</h1>
             <UploadQuiz text={text} setQuiz={handleQuizGenerated} />
-            {text : Here is the quiz}
+            {/* {text : Here is the quiz} */}
             {quiz && <Quiz quiz={quiz} />} {/* This renders the quiz after generation */}
           </>
         )}
