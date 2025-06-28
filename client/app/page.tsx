@@ -86,7 +86,7 @@ export default function Home() {
             className={activeComponent === "shortnote" ? "active" : ""}
             onClick={() => setActiveComponent("shortnote")}
           >
-            Short Note Generator
+            Short Notes Generator
           </button>
           <button
             className={activeComponent === "quiz" ? "active" : ""}
